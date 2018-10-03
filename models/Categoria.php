@@ -40,8 +40,12 @@ class Categoria{
             if($get->rowCount()==0){
                 die(json_encode(['error'=>'Nada foi encontrado','method'=>'read']));
             }
+            if($get->rowCount()==1){
+                $user=$get->fetchAll(PDO::FETCH_ASSOC);
+                $this->nome=$user['nome'];
+                $this->descricao=$user['descricao'];
+            }
             die(json_encode($get->fetchAll(PDO::FETCH_ASSOC)));
-            
         }catch(PDOException $e){
             die(json_encode(['error'=>$e->getMessage(),'method'=>'read']));
         }

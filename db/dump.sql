@@ -17,3 +17,6 @@ CREATE TABLE `post` (
 
 ALTER TABLE `post`
   ADD CONSTRAINT `fk_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`);
+
+--INSERT INTO categoria (nome,descricao) VALUES('Política','Comentários sobre as eleições 2018');
+--INSERT INTO post (titulo,texto,id_categoria,autor) VALUES('Post1','Vou votar em branco',1,'Jorge');

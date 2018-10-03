@@ -16,10 +16,13 @@ class Post{
     
     public function create($values){
         try{
-            if(!isset($values['titulo'])||$values['titulo']=='') die(json_encode(['error'=>'Título inválido','method'=>'create']));
-            if(!isset($values['texto'])||$values['texto']=='') die(json_encode(['error'=>'Texto inválido','method'=>'create']));
-            if(!isset($values['autor'])||$values['autor']=='') die(json_encode(['error'=>'Autor inválido','method'=>'create']));
-            if(!isset($values['id_categoria'])||intval($values['id_categoria']<=0)) die(json_encode(['error'=>'Categoria inválida','method'=>'create']));
+            $error=[];
+            if(!isset($values['titulo'])||$values['titulo']=='') array_push($error,'Título inválido');
+            if(!isset($values['texto'])||$values['texto']=='') array_push($error,'Texto inválido');
+            if(!isset($values['autor'])||$values['autor']=='') array_push($error,'Autor inválido');
+            if(!isset($values['id_categoria'])||intval($values['id_categoria']<=0)) array_push($error,'Categoria inválida');
+            
+            if(sizeof($error)>0) die(json_encode(['error'=>$error,'method'=>'create']));
             
             $query='INSERT INTO post (titulo,texto,autor,id_categoria) VALUES(?,?,?,?);';
             $post=$this->conexao->prepare($query);
@@ -50,7 +53,6 @@ class Post{
             if($get->rowCount()==0){
                 die(json_encode(['error'=>'Nada foi encontrado','method'=>'read']));
             }
-            echo 'mane';
             die(json_encode($get->fetchAll(PDO::FETCH_ASSOC)));
         }catch(PDOException $e){
             die(json_encode(['error'=>$e->getMessage(),'method'=>'read']));
@@ -59,28 +61,26 @@ class Post{
 
     public function update($values,$id){
         try{
-            $query='UPDATE categoria SET ';
-            if(isset($values['nome'])&&isset($values['descricao'])){
-                $query.='nome=:nome,descricao=:descricao';
-            }else if(isset($values['nome'])){
-                $query.='nome=:nome';
-            }else if(isset($values['descricao'])){
-                $query.='descricao=:descricao';
-            }else{
-                die(json_encode(['error'=>'Favor inserir os valores','method'=>'update']));
-            }
-
-            $put=$this->conexao->prepare($query.' WHERE id=:id');
-            if(isset($values['nome'])){
-                $put->bindParam('nome',$values['nome'],PDO::PARAM_STR);
-            }
-            if(isset($values['descricao'])){
-                $put->bindParam('descricao',$values['descricao'],PDO::PARAM_STR);
-            }
-            $put->bindParam('id',$id,PDO::PARAM_INT);
+            $id=intval($id);
+            $error=[];
+            if(!isset($id)) array_push($error,'Informe o ID corretamente');
+            if(!isset($values['titulo'])||$values['titulo']=='') array_push($error,'Título inválido');
+            if(!isset($values['texto'])||$values['texto']=='') array_push($error,'Texto inválido');
+            if(!isset($values['autor'])||$values['autor']=='') array_push($error,'Autor inválido');
+            if(!isset($values['id_categoria'])||intval($values['id_categoria']<=0)) array_push($error,'Categoria inválida');
+            
+            if(sizeof($error)>0) die(json_encode(['error'=>$error,'method'=>'update']));
+            
+            $query="UPDATE post SET titulo=?,texto=?,autor=?,id_categoria=? WHERE id=?;";
+            $put=$this->conexao->prepare($query);
+            $put->bindParam(1,$values['titulo'],PDO::PARAM_STR);
+            $put->bindParam(2,$values['texto'],PDO::PARAM_STR);
+            $put->bindParam(3,$values['autor'],PDO::PARAM_STR);
+            $put->bindParam(4,$values['id_categoria'],PDO::PARAM_INT);
+            $put->bindParam(5,$id,PDO::PARAM_INT);
             $put->execute();
             if($put->rowCount()==0){
-                die(json_encode(['error'=>'Parâmetros inválidos','method'=>'update']));
+                die(json_encode(['error'=>'Impossível atualizar','method'=>'update']));
             }
         }catch(PDOException $e){
             die(json_encode(['error'=>$e->getMessage(),'method'=>'update']));
@@ -89,7 +89,7 @@ class Post{
     public function delete($id){
         try{
             $id=intval($id);
-            if(!isset($id)) die(json_encode(['error'=>'Informe o id corretamente','method'=>'delete']));
+            if(!isset($id)) die(json_encode(['error'=>'Informe o ID corretamente','method'=>'delete']));
             $query='DELETE FROM post WHERE id=?';
             $delete=$this->conexao->prepare($query);
             $delete->bindParam(1,$id,PDO::PARAM_INT);

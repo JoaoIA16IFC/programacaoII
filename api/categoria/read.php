@@ -3,15 +3,8 @@ header('Content-Type: application/json; charset=utf-8');
 
 require_once '../../config/Conexao.php';
 require_once '../../models/Categoria.php';
-if(!isset($_SERVER['PHP_AUTH_USER'])){
-    header('WWW-Authenticate: Basic realm="Página Restrita"');
-    header('HTTP/1.0 401 Unauthorized');
-    die(json_encode(["mensagem"=> 'Autenticação necessária']));
-}elseif($_SERVER['PHP_AUTH_USER']!= 'admin'
-        || $_SERVER['PHP_AUTH_PW']!='admin'){
-            die(json_encode(["mensagem"=> 'Erro ao autenticar']));
-}
-if($_SERVER['REQUEST_METHOD']!='GET') die('ERRO: Método errado');
+
+if($_SERVER['REQUEST_METHOD']!='GET') die(json_encode(["error"=> 'Método errado']));
 $db = new Conexao();
 $cat = new Categoria($db->getConexao());
 try{

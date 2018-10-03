@@ -4,7 +4,7 @@ header('Content-Type: application/json; charset=utf-8');
 require_once '../../config/Conexao.php';
 require_once '../../models/Post.php';
 
-if($_SERVER['REQUEST_METHOD']!='GET') die('ERRO: Método errado');
+if($_SERVER['REQUEST_METHOD']!='GET') die(json_encode(["error"=> 'Método errado']));
 $db = new Conexao();
 $post = new Post($db->getConexao());
 try{
