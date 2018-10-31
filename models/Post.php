@@ -44,7 +44,14 @@ class Post{
         try{
             $query='SELECT * FROM post ';
             if(isset($id)){
-                $get=$this->conexao->prepare($query. 'WHERE id=?');
+                if(isset($id['post'])){
+                    $id=$id['post'];
+                    $query.='WHERE id=?';
+                }else{
+                    $id=$id['cat'];
+                    $query.='WHERE id_categoria=?';
+                }
+                $get=$this->conexao->prepare($query);
                 $get->bindParam(1,$id,PDO::PARAM_INT);
             }else{
                 $get=$this->conexao->prepare($query);

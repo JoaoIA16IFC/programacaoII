@@ -1,5 +1,5 @@
 CREATE DATABASE meu_blog;
-
+USE meu_blog;
 CREATE TABLE `categoria` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `nome` varchar(50) NOT NULL,
@@ -18,5 +18,23 @@ CREATE TABLE `post` (
 ALTER TABLE `post`
   ADD CONSTRAINT `fk_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`);
 
---INSERT INTO categoria (nome,descricao) VALUES('Política','Comentários sobre as eleições 2018');
---INSERT INTO post (titulo,texto,id_categoria,autor) VALUES('Post1','Vou votar em branco',1,'Jorge');
+INSERT INTO categoria (nome,descricao) VALUES
+('Política','Comentários sobre as eleições 2018'),
+('Esportes','Tudo sobre futebol e outros esportes'),
+('Entretenimento','Notícias sobre o mundo do cinema'),
+('Comédia','KKKJKJKJ trallei'),
+('Infantil','Conteúdo para crianças'),
+('Comida','Hmmm que fome'),
+('Moda','Maria linda');
+
+INSERT INTO post (titulo,texto,id_categoria,autor) VALUES
+('Post1','Vou votar em branco',1,'Jorge'),
+('Post2','Basquete é toooop',2,'Eu'),
+('Post3','SW IX vai flopar',3,'Eu 2019'),
+('Post4','KJKJKJKJ GRAZADO',4,'Didi'),
+('Post5','Peppa Pig é top',5,'Maria'),
+('Post6','Fazer esse bolo hmmm',6,'Ana'),
+('Post7','te amo',7,'Eu'),
+('Post8','Cade meu pão',6,'Andressa'),
+('Post9','Vou te comer',6,'Thairinck'),
+('Post10','Comer uma pizza',6,'Nicolas');

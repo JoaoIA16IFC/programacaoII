@@ -11,7 +11,7 @@ class Conexao{
     public function getConexao(){
         $this->conexao = null;
         try{
-            $this->conexao = new PDO('mysql:host='.$this->host.';dbname='.$this->dbname.';charset=utf8',$this->user,$this->passwd,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+            $this->conexao = new PDO('mysql:host='.$this->host.';dbname='.$this->dbname,$this->user,$this->passwd,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
         }catch(PDOException $e){
             die("Erro na conexão: ".$e->getMessage());
         }

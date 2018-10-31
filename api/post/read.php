@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-
+header('Access-Control-Allow-Origin: *');
 require_once '../../config/Conexao.php';
 require_once '../../models/Post.php';
 
@@ -8,8 +8,10 @@ if($_SERVER['REQUEST_METHOD']!='GET') die(json_encode(["error"=> 'Método errado
 $db = new Conexao();
 $post = new Post($db->getConexao());
 try{
-    if(isset($_GET['id']) && $_GET['id']>0){
-        $post->read($_GET['id']);
+    if(isset($_GET['idpost']) && $_GET['idpost']>0){
+        $post->read(['post'=>$_GET['idpost']]);
+    }else if(isset($_GET['idcat']) && $_GET['idcat']>0){
+        $post->read(['cat'=>$_GET['idcat']]);
     }else{
         $post->read();
     }
