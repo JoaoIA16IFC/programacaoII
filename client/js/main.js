@@ -12,7 +12,13 @@ async function getCategorias() {
     resp.forEach(cat => {
         categorias.push(cat.nome)
         const li = document.createElement('li')
-        li.innerText = cat.nome
+        if(window.innerWidth/window.innerHeight>1){
+            li.innerText = cat.nome
+        }else{
+            const i = document.createElement('i')
+            i.classList=cat.icone
+            li.appendChild(i)
+        }
         li.addEventListener('click',()=>{
             getPosts({categoria:cat.id})
         })

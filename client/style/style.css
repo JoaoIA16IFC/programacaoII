@@ -99,6 +99,12 @@ header ul li{
     font-size: 1.2em;
     transition: 300ms
 }
+header ul li i{
+    height: 1.2em;
+    width: 1.2em;
+    font-size: 1.2em;
+
+}
 header ul li:hover{
     background-color: #1b272c;
     font-size: 1.3em;
@@ -107,8 +113,8 @@ header ul li:hover{
     main div.overlay .wrapper{
         width: 90vw;
     }
-    main header{
+    /* main header{
         width: auto;
         overflow-x: auto;
-    }
+    } */
 }

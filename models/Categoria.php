@@ -4,6 +4,7 @@ class Categoria{
     public $id;
     public $nome;
     public $descricao;
+    public $icone;
 
     private $conexao;
 
@@ -13,10 +14,11 @@ class Categoria{
     
     public function create($values){
         try{
-            $query='INSERT INTO categoria (nome,descricao) VALUES(?,?);';
+            $query='INSERT INTO categoria (nome,descricao,icone) VALUES(?,?,?);';
             $post=$this->conexao->prepare($query);
             $post->bindParam(1,$values['nome'],PDO::PARAM_STR);
             $post->bindParam(2,$values['descricao'],PDO::PARAM_STR);
+            $post->bindParam(2,$values['icone'],PDO::PARAM_STR);
             $post->execute();
             if($post->rowCount()==0){
                 die(json_encode(['error'=>'Parâmetros inválidos','method'=>'create']));
@@ -44,6 +46,7 @@ class Categoria{
                 $user=$get->fetchAll(PDO::FETCH_ASSOC);
                 $this->nome=$user['nome'];
                 $this->descricao=$user['descricao'];
+                $this->icone=$user['icone'];
             }
             die(json_encode($get->fetchAll(PDO::FETCH_ASSOC)));
         }catch(PDOException $e){
@@ -51,31 +54,23 @@ class Categoria{
         }
     }
 
-    public function update($values,$id){
+    public function update($values,$id){//TERMINAR
         try{
-            $query='UPDATE categoria SET ';
-            if(isset($values['nome'])&&isset($values['descricao'])){
-                $query.='nome=:nome,descricao=:descricao';
-            }else if(isset($values['nome'])){
-                $query.='nome=:nome';
-            }else if(isset($values['descricao'])){
-                $query.='descricao=:descricao';
-            }else{
+            if(!isset($values['nome'])||!isset($values['descricao'])||!isset($values['icone'])){
                 die(json_encode(['error'=>'Favor inserir os valores','method'=>'update']));
             }
-
-            $put=$this->conexao->prepare($query.' WHERE id=:id');
-            if(isset($values['nome'])){
-                $put->bindParam('nome',$values['nome'],PDO::PARAM_STR);
-            }
-            if(isset($values['descricao'])){
-                $put->bindParam('descricao',$values['descricao'],PDO::PARAM_STR);
-            }
-            $put->bindParam('id',$id,PDO::PARAM_INT);
+            $put=$this->conexao->prepare('UPDATE categoria SET nome=?,descricao=?,icone=? WHERE id=?');
+            $put->bindParam(1,$values['nome'],PDO::PARAM_STR);
+            $put->bindParam(2,$values['descricao'],PDO::PARAM_STR);
+            $put->bindParam(3,$values['icone'],PDO::PARAM_STR);
+            $put->bindParam(4,intval($id),PDO::PARAM_INT);
             $put->execute();
             if($put->rowCount()==0){
                 die(json_encode(['error'=>'Parâmetros inválidos','method'=>'update']));
             }
+            $this->nome=$values['nome'];
+            $this->descricao=$values['descricao'];
+            $this->icone=$values['icone'];
         }catch(PDOException $e){
             die(json_encode(['error'=>$e->getMessage(),'method'=>'update']));
         }
@@ -83,7 +78,7 @@ class Categoria{
     public function delete($id){
         try{
             $id=intval($id);
-            if(!isset($id)) die(json_encode(['error'=>'Informe o id corretamente','method'=>'delete']));
+            if(!isset($id)||$id<1) die(json_encode(['error'=>'Informe o id corretamente','method'=>'delete']));
             $query='DELETE FROM categoria WHERE id=?';
             $delete=$this->conexao->prepare($query);
             $delete->bindParam(1,$id,PDO::PARAM_INT);

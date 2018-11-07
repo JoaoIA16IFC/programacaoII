@@ -3,7 +3,8 @@ USE meu_blog;
 CREATE TABLE `categoria` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `nome` varchar(50) NOT NULL,
-  `descricao` varchar(255) NOT NULL
+  `descricao` varchar(255) NOT NULL,
+  `icone` varchar(30)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `post` (
@@ -18,14 +19,14 @@ CREATE TABLE `post` (
 ALTER TABLE `post`
   ADD CONSTRAINT `fk_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`);
 
-INSERT INTO categoria (nome,descricao) VALUES
-('Política','Comentários sobre as eleições 2018'),
-('Esportes','Tudo sobre futebol e outros esportes'),
-('Entretenimento','Notícias sobre o mundo do cinema'),
-('Comédia','KKKJKJKJ trallei'),
-('Infantil','Conteúdo para crianças'),
-('Comida','Hmmm que fome'),
-('Moda','Maria linda');
+INSERT INTO categoria (nome,descricao,icone) VALUES
+('Política','Comentários sobre as eleições 2018','fas fa-landmark'),
+('Esportes','Tudo sobre futebol e outros esportes','fas fa-football-ball'),
+('Entretenimento','Notícias sobre o mundo do cinema','fas fa-headset'),
+('Comédia','KKKJKJKJ trallei','fas fa-theater-masks'),
+('Infantil','Conteúdo para crianças','fas fa-child'),
+('Comida','Hmmm que fome','fas fa-utensils'),
+('Moda','Maria linda','fas fa-tshirt');
 
 INSERT INTO post (titulo,texto,id_categoria,autor) VALUES
 ('Post1','Vou votar em branco',1,'Jorge'),
