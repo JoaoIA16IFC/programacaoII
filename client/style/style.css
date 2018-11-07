@@ -100,21 +100,21 @@ header ul li{
     transition: 300ms
 }
 header ul li i{
-    height: 1.2em;
-    width: 1.2em;
     font-size: 1.2em;
+    height: 1.5em;
+    width: 1.5em;
+    text-align: center;
+    transition: 300ms;
+}
+@media(min-aspect-ratio:1/1){
+    header ul li:hover{
+        background-color: #1b272c;
+        font-size: 1.3em;
+    }
+}
 
-}
-header ul li:hover{
-    background-color: #1b272c;
-    font-size: 1.3em;
-}
 @media(max-aspect-ratio:1/1){
     main div.overlay .wrapper{
         width: 90vw;
     }
-    /* main header{
-        width: auto;
-        overflow-x: auto;
-    } */
 }

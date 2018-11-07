@@ -4,6 +4,7 @@ const section = main.querySelector('section')
 const ul = header.querySelector('ul')
 let categorias = []
 let scrollY
+let lastClicked = document.createElement('li')
 getCategorias()
 getPosts()
 async function getCategorias() {
@@ -12,20 +13,31 @@ async function getCategorias() {
     resp.forEach(cat => {
         categorias.push(cat.nome)
         const li = document.createElement('li')
+        let i
         if(window.innerWidth/window.innerHeight>1){
             li.innerText = cat.nome
         }else{
-            const i = document.createElement('i')
-            i.classList=cat.icone
+            i = document.createElement('i')
+            i.classList = cat.icone
             li.appendChild(i)
         }
         li.addEventListener('click',()=>{
             getPosts({categoria:cat.id})
+            li.style.backgroundColor = '#1b272c'
+            reset(li)
+            i.style.fontSize = '1.7em'
         })
         ul.appendChild(li)
     })
 }
-
+function reset(li){
+    lastClicked.style.backgroundColor = '#273941'
+    console.log(lastClicked)
+    const i=lastClicked.querySelector('i')
+    if(i)
+        i.style.fontSize = '1.2em'
+    lastClicked = li   
+}
 async function getPosts(idObject={}){
     let option
     let url = 'http://127.0.0.1/api/post/read.php'
