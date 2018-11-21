@@ -1,12 +1,14 @@
 const main = document.querySelector('main')
-const header=main.querySelector('header')
+const header = main.querySelector('header')
 const section = main.querySelector('section')
 const ul = header.querySelector('ul')
+const previsaoContainer = main.querySelector('.previsao')
 let categorias = []
 let scrollY
 let lastClicked = document.createElement('li')
 getCategorias()
 getPosts()
+getWeather()
 async function getCategorias() {
     const req = await fetch('http://127.0.0.1/api/categoria/read.php')
     const resp = await req.json()
@@ -102,4 +104,25 @@ function createOverlay(post){
 }
 function stopScroll(){
     window.scrollTo({},scrollY)
+}
+
+async function getWeather(){
+    navigator.geolocation.getCurrentPosition(async position=>{
+        const req = await fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&lang=pt&APPID=c144ba4eaa5f0aebc01c661169701dc7`)
+        const resp = await req.json()
+
+        const nome = document.createElement('li')
+        nome.innerText=resp.name
+        previsaoContainer.appendChild(nome)
+        const atual = document.createElement('li')
+        atual.innerText='Temperatura atual: '+resp.main.temp+'°C'
+        previsaoContainer.appendChild(atual)
+        const minima = document.createElement('li')
+        minima.innerText='Mínima: '+resp.main.temp_min+'°C'
+        previsaoContainer.appendChild(minima)
+        const maxima = document.createElement('li')
+        maxima.innerText='Máxima: '+resp.main.temp_max+'°C'
+        previsaoContainer.appendChild(maxima)
+        
+    })
 }
